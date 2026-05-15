@@ -238,7 +238,25 @@ FastAgent/
 
 ---
 
-## 10. Philosophy
+---
+
+## 10. CREAM — The Temporal Context Engine
+**CREAM** (Context Reconstruction Engine & Activity Model) is the optional temporal layer for FastAgent. Originally conceived as a **2.5D Spatial File Explorer & CLI**, CREAM now serves as the "System Memory" and "Timeline" for the agentic runtime.
+
+### 10.1 From Explorer to Engine
+*   **Original Concept**: A "Google Earth for Files" — a spatial, 2.5D interface for navigating file histories and system events via CLI.
+*   **Agent Integration**: In FastAgent, CREAM provides the **Temporal Dimension**. While other agents live in an eternal "now," FastAgent + CREAM live in a reconstructible timeline.
+
+### 10.2 Why CREAM Matters
+- **Deterministic Replay**: CREAM archives Task-State, World-State, and UI-Snapshots, allowing a developer to replay any agent run exactly as it happened.
+- **Timeline-First UI**: Instead of a chat history, FastAgent provides a **Temporal Execution Trace** (Plan → Step → Tool → Observation).
+- **System-Level Memory**: Not just "prompt-stuffing." CREAM allows the agent to reconstruct "What happened?", "Why?", and "How did the UI look back then?"
+
+> **CREAM is the reason FastAgent is a Runtime, not a Chatbot.**
+
+---
+
+## 11. Philosophy
 Traditional software executes functions. **FastAgent executes evolving systems.**
 
 The goal is not better prompts; it is **deterministic machine cognition infrastructure**. FastAgent is the missing link in the evolution from primitives to spatial operating environments:
