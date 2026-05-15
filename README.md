@@ -22,7 +22,7 @@ FastAgent soll das erste lokale, modulare, deterministische Agent‑Runtime‑Sy
 - **Sub‑Agents** orchestriert (A2A-Protokoll)
 - **Komplett offline** auf GPU/CPU läuft
 
-> Kein Agent‑Zoo. Keine Halluzinations‑APIs. Keine 500‑Zeilen‑Prompts.
+> **Kein Agent‑Zoo. Keine Halluzinations‑APIs. Keine 500‑Zeilen‑Prompts.**
 
 ---
 
@@ -73,28 +73,47 @@ FastAgent ist das Bindeglied zwischen Gehirn (FastAI) und Körper (Windows-Nativ
 ## 4. Roadmap
 
 ### Phase 1 — Foundations (v0.1 → v0.3)
-**Goal**: Minimal runnable agent with deterministic loop.
-- [x] Define Agent State Model (task, memory, world, error)
-- [ ] Implement Planner v1 (LLM‑based step breakdown)
-- [ ] Implement Execution Loop (plan → act → observe)
-- [ ] Add Tool Registry (FastTool + FastToolChain)
-- [ ] Add UI‑Action Bridge (FastUIA integration)
-- [ ] Add Vision Bridge (FastVision screenshot + OCR)
+**Ziel**: Minimaler lauffähiger Agent mit deterministischem Loop.
+- [x] Definition Agent State Model (Task, Memory, World, Error)
+- [ ] Implementierung Planner v1 (LLM-based Step Breakdown)
+- [ ] Implementierung Execution Loop (Plan → Act → Observe)
+- [ ] Integration Tool Registry (FastTool + FastToolChain)
+- [ ] UI-Action Bridge (FastUIA Integration)
+- [ ] Vision Bridge (FastVision Screenshot + OCR)
+- [ ] Memory v1 (Short-Term only)
+- [ ] Logging + Trace (Deterministisches Replay)
 
-**Deliverable**: A minimal agent that can: *“Open Notepad → type text → save file”.*
+**Deliverable**: Ein minimaler Agent, der z.B. Notepad öffnen, Text schreiben und speichern kann.
 
 ### Phase 2 — Intelligence Layer (v0.4 → v0.6)
-**Goal**: Agent becomes adaptive, reflective, and context‑aware.
-- [ ] Memory v2 (long-term + vector store)
+**Ziel**: Agent wird adaptiv, reflektierend und kontextbewusst.
+- [ ] Memory v2 (Long-Term + Vector Store)
 - [ ] RAG Integration (FastRAG + FastVectorDB)
-- [ ] Reflection Loop (self‑critique + correction)
-- [ ] Error Detection (UI mismatch, tool failure, invalid state)
+- [ ] Reflection Loop (Self-Critique + Correction)
+- [ ] Error Detection (UI Mismatch, Tool Failure, Invalid State)
+- [ ] Replanning Engine (Retry mit neuer Strategie)
+- [ ] Human-in-the-Loop (Rückfrage bei Unklarheiten)
+
+**Deliverable**: Der Agent bewältigt mehrstufige Aufgaben zuverlässig, auch bei UI-Änderungen.
 
 ### Phase 3 — Multi‑Agent System (v0.7 → v0.9)
-**Goal**: Specialized agents collaborating via A2A Protocol.
-- [ ] Agent Router (task delegation)
+**Ziel**: Spezialisierte Agenten kollaborieren via A2A Protokoll.
+- [ ] Agent Router (Task Delegation)
 - [ ] Specialized Agents (Coding, Retrieval, UI, Citation)
 - [ ] A2A Protocol (Agent-to-Agent Messaging)
+- [ ] MCP Integration (Optionale externe Tools)
+
+**Deliverable**: Ein System, in dem Agenten sich wie Microservices koordinieren.
+
+### Phase 4 — Production Runtime (v1.0)
+**Ziel**: Stabile, dokumentierte und erweiterbare Agent-Plattform.
+- [ ] Stable API (Java + JSON Command Schema)
+- [ ] Plugin System (Third-party Tools + Agents)
+- [ ] Security Sandbox (Tool Permissions, UI Scopes)
+- [ ] Benchmark Suite (Latency, Reliability, Success Rate)
+- [ ] Demo Suite & Documentation
+
+**Deliverable**: FastAgent v1.0 — eine vollständige lokale Agent-Runtime.
 
 ---
 
@@ -111,7 +130,7 @@ agent.run("Open Notepad, write 'Hello Andre', save it to Desktop.");
 ## 6. Philosophy
 FastAgent ist nicht “AutoGPT für Java”. FastAgent ist ein **OS‑Level Execution Engine** für echte Autonomie:
 - **Versteht die Welt** (Vision + UIA)
-- **Plant Schritte** | **Führt Tools aus** | **Beobachtet Ergebnisse** | **Korrigiert Fehler**
+- **Plant Schritte** | **Führt Tools aus** | **Beobachtet Ergebnisse** | **Korrigiert Fehler** | **Lernt aus Erfahrung**
 
 **Ein Agent, der wirklich arbeitet, nicht nur redet.**
 
