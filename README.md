@@ -204,7 +204,7 @@ graph TD
 > [!IMPORTANT]
 > For a deep dive into the system design, see: [Full Architecture Documentation](docs/architecture.md)
 
-### 5.1 Agent State Model
+### 9.1 Agent State Model
 To ensure determinism, the agent maintains a strictly typed, immutable state snapshot:
 ```text
 AgentState {
@@ -215,7 +215,7 @@ AgentState {
 }
 ```
 
-### 5.2 Anatomy of FastAgent (Internal Layers)
+### 9.2 Anatomy of FastAgent (Internal Layers)
 | Layer | Component | Responsibility |
 |-------|-----------|----------------|
 | **Core** | `FastAgentCore` | State Machine and Deterministic Scheduler. |
@@ -225,7 +225,7 @@ AgentState {
 | **Reasoning** | `FastAgentBrain` | Local inference engine (FastModel). |
 | **Monitoring** | `FastAgentMonitor` | Feedback, error detection, and recovery. |
 
-### 5.3 The FastAI Ecosystem (Module Matrix)
+### 9.3 The FastAI Ecosystem (Module Matrix)
 | Module | Role | Description |
 | :--- | :--- | :--- |
 | **FastModel** | Reasoning | Local GGUF/ONNX runtime & token management. |
@@ -240,7 +240,7 @@ AgentState {
 
 ## 10. Schemas (Deterministic I/O)
 
-### 6.1 Planner Output Schema (Task Graph)
+### 10.1 Planner Output Schema (Task Graph)
 ```json
 {
   "steps": [
@@ -251,7 +251,7 @@ AgentState {
 }
 ```
 
-### 6.2 Tool Call Schema (Execution Boundary)
+### 10.2 Tool Call Schema (Execution Boundary)
 ```json
 {
   "tool": "uia.click",
@@ -263,7 +263,7 @@ AgentState {
 
 ## 11. Technical Sketches (Architectural Drafts)
 
-### 7.1 The Agent Runtime Interface
+### 11.1 The Agent Runtime Interface
 ```java
 public interface FastAgent {
     // Static factory for version 0.1
@@ -277,7 +277,7 @@ public interface FastAgent {
 }
 ```
 
-### 7.2 The Deterministic Execution Loop
+### 11.2 The Deterministic Execution Loop
 ```java
 while (!state.task().isDone()) {
     // 1. Logic: Construct deterministic task graph
@@ -372,11 +372,11 @@ FastAgent/
 ## 14. CREAM — The Temporal Context Engine
 **CREAM** (Context Reconstruction Engine & Activity Model) is the optional temporal layer for FastAgent. Originally conceived as a **2.5D Spatial File Explorer & CLI**, CREAM now serves as the "System Memory" and "Timeline" for the agentic runtime.
 
-### 10.1 From Explorer to Engine
+### 14.1 From Explorer to Engine
 *   **Original Concept**: A "Google Earth for Files" — a spatial, 2.5D interface for navigating file histories and system events via CLI.
 *   **Agent Integration**: In FastAgent, CREAM provides the **Temporal Dimension**. While other agents live in an eternal "now," FastAgent + CREAM live in a reconstructible timeline.
 
-### 10.2 Why CREAM Matters
+### 14.2 Why CREAM Matters
 - **Deterministic Replay**: CREAM archives Task-State, World-State, and UI-Snapshots, allowing a developer to replay any agent run exactly as it happened.
 - **Timeline-First UI**: Instead of a chat history, FastAgent provides a **Temporal Execution Trace** (Plan → Step → Tool → Observation).
 - **System-Level Memory**: Not just "prompt-stuffing." CREAM allows the agent to reconstruct "What happened?", "Why?", and "How did the UI look back then?"
