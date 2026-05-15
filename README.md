@@ -9,6 +9,8 @@
 
 **FastAgent is not an AI-assistant, not a chatbot, and not a prompt-wrapper. It is a deterministic Agent Operating Model (AOM) — a local-first execution layer for machine cognition.**
 
+**FastAgent is not an Agent Framework, but an Agent Runtime Model with deterministic state, replay, and timeline.**
+
 **FastAgent = Plan → Act → Observe → Adapt.**
 
 ---
@@ -26,7 +28,43 @@ Most current agent systems are built on hidden state mutations and opaque prompt
 
 ---
 
-## 2. The Ecosystem Map: The Path to CREAM
+## 2. The Divergence: Why Existing Frameworks Fail
+Most "Unified Agent Systems" (e.g., Agno, LangChain) are built on **Stochastic Workflows**. They focus on connecting as many providers as possible, leading to:
+
+- **Invisible State Mutation**: You can't see why the agent deviated.
+- **Retry-Hell**: Failing tools are simply called again with the same parameters.
+- **Hallucinated Loops**: No strictly defined state machine to prevent infinite recursion.
+- **Opaque Context**: Prompts are stuffed with "Chat History" instead of structured system state.
+
+### FastAgent vs. Stochastic Frameworks
+| Feature | Stochastic Frameworks | FastAgent Runtime |
+| :--- | :--- | :--- |
+| **Logic** | Probability-based branching | **Deterministic State Machine** |
+| **Reliability** | "Try again and hope" | **Verify & Replan** |
+| **Debugging** | Print logs & Prompts | **Full State Replay** |
+| **Philosophy** | Unified Glue / Wrapper | **Operating System Layer** |
+
+> [!TIP]
+> Read the full strategic overview: [Why FastAgent's Architecture Matters](docs/why-this-architecture-matters.md)
+
+---
+
+## 3. Observable Execution Trace (Sample)
+In FastAgent, every run produces a transparent, replayable trace:
+```log
+[04:00:01] STATE_COMMIT: WorldState updated (Notepad.exe detected)
+[04:00:02] PLANNER_RESOLVE: Intent="Write Greeting" -> Steps=[TYPE, SAVE]
+[04:00:03] TOOL_BOUNDARY: Call(uia.type, "Hello Andre")
+[04:00:04] OBSERVATION: BufferChangeDetected(Text="Hello Andre")
+[04:00:05] VERIFICATION: Success. Advancing to next step...
+```
+
+> [!NOTE]
+> View a full step-by-step example: [Sample Notepad Execution Trace](docs/trace-notepad.md)
+
+---
+
+## 4. The Ecosystem Map: The Path to CREAM
 FastAgent is the cognitive runtime in a larger evolution of native performance.
 
 ```mermaid
@@ -46,7 +84,7 @@ graph TD
 
 ---
 
-## 3. Design Principles
+## 5. Design Principles
 
 - **Deterministic by Default**: Equal Input + Equal Memory = Equal Execution path. Every transition is explicit and replayable.
 - **Observable Execution**: Every action is inspectable through explicit runtime boundaries. Nothing mutates invisibly.
@@ -56,7 +94,7 @@ graph TD
 
 ---
 
-## 4. Technical Primer: The Agentic Loop
+## 6. Technical Primer: The Agentic Loop
 Unlike "Assistants" (Cursor/Windsurf) that help you think, FastAgent is a runtime that **helps you act** in a closed-loop system.
 
 ```mermaid
@@ -73,7 +111,9 @@ graph TD
 
 ---
 
-## 5. Architecture Overview
+## 7. Architecture Overview
+> [!IMPORTANT]
+> For a deep dive into the system design, see: [Full Architecture Documentation](docs/architecture.md)
 
 ### 5.1 Agent State Model
 To ensure determinism, the agent maintains a strictly typed, immutable state snapshot:
@@ -109,7 +149,7 @@ AgentState {
 
 ---
 
-## 6. Schemas (Deterministic I/O)
+## 8. Schemas (Deterministic I/O)
 
 ### 6.1 Planner Output Schema (Task Graph)
 ```json
@@ -132,7 +172,7 @@ AgentState {
 
 ---
 
-## 7. Technical Sketches (Architectural Drafts)
+## 9. Technical Sketches (Architectural Drafts)
 
 ### 7.1 The Agent Runtime Interface
 ```java
@@ -164,7 +204,7 @@ while (!state.task().isDone()) {
 
 ---
 
-## 8. Roadmap
+## 10. Roadmap
 
 ### Phase 0 — Foundations (Current Stage)
 - [x] Establish the Deterministic Operating Model Thesis
@@ -202,7 +242,7 @@ while (!state.task().isDone()) {
 
 ---
 
-## 9. Repository Structure (Proposed Skeletons)
+## 11. Repository Structure (Proposed Skeletons)
 ```text
 FastAgent/
  ├─ src/             # Core source code
@@ -240,7 +280,7 @@ FastAgent/
 
 ---
 
-## 10. CREAM — The Temporal Context Engine
+## 12. CREAM — The Temporal Context Engine
 **CREAM** (Context Reconstruction Engine & Activity Model) is the optional temporal layer for FastAgent. Originally conceived as a **2.5D Spatial File Explorer & CLI**, CREAM now serves as the "System Memory" and "Timeline" for the agentic runtime.
 
 ### 10.1 From Explorer to Engine
@@ -256,7 +296,7 @@ FastAgent/
 
 ---
 
-## 11. Philosophy
+## 13. Philosophy
 Traditional software executes functions. **FastAgent executes evolving systems.**
 
 The goal is not better prompts; it is **deterministic machine cognition infrastructure**. FastAgent is the missing link in the evolution from primitives to spatial operating environments:
