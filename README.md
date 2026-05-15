@@ -28,7 +28,20 @@ Most current agent systems are built on hidden state mutations and opaque prompt
 
 ---
 
-## 2. The Divergence: Why Existing Frameworks Fail
+## 2. Why FastAgent is NOT an Agent Framework
+FastAgent is frequently compared to frameworks like **Agno**, **LangChain**, or **HKUDS-FastAgent**. This is a category error.
+
+- **Frameworks** focus on connecting tools, generating JSON, and building prompt-based workflows. They are **stochastic libraries**.
+- **FastAgent** is an **Execution Runtime**. It focuses on state semantics, deterministic scheduling, and OS-level observability.
+
+> [!TIP]
+> **See the full comparison matrix**: [Agent System Comparison](docs/comparison.md)  
+> **Read the strategic positioning**: [Branding & Infrastructure Strategy](docs/branding_strategy.md)  
+> **Explore the naming evolution**: [Beyond "Agent Framework" (Naming Analysis)](docs/naming_evolution.md)
+
+---
+
+## 3. The Divergence: Why Existing Frameworks Fail
 Most "Unified Agent Systems" (e.g., Agno, LangChain) are built on **Stochastic Workflows**. They focus on connecting as many providers as possible, leading to:
 
 - **Invisible State Mutation**: You can't see why the agent deviated.
@@ -49,7 +62,7 @@ Most "Unified Agent Systems" (e.g., Agno, LangChain) are built on **Stochastic W
 
 ---
 
-## 3. Chatbot vs. Runtime
+## 4. Chatbot vs. Runtime
 The fundamental difference between FastAgent and traditional AI systems is the shift from **reactive speech** to **deterministic action**.
 
 ### Comparison Overview
@@ -100,7 +113,7 @@ The fundamental difference between FastAgent and traditional AI systems is the s
 
 ---
 
-## 4. Observable Execution Trace (Sample)
+## 5. Observable Execution Trace (Sample)
 In FastAgent, every run produces a transparent, replayable trace:
 ```log
 [04:00:01] STATE_COMMIT: WorldState updated (Notepad.exe detected)
@@ -115,7 +128,7 @@ In FastAgent, every run produces a transparent, replayable trace:
 
 ---
 
-## 5. The Ecosystem Map: The Path to CREAM
+## 6. The Ecosystem Map: The Path to CREAM
 FastAgent is the cognitive runtime in a larger evolution of native performance.
 
 ```mermaid
@@ -135,7 +148,7 @@ graph TD
 
 ---
 
-## 6. Design Principles
+## 7. Design Principles
 
 - **Deterministic by Default**: Equal Input + Equal Memory = Equal Execution path. Every transition is explicit and replayable.
 - **Observable Execution**: Every action is inspectable through explicit runtime boundaries. Nothing mutates invisibly.
@@ -145,7 +158,7 @@ graph TD
 
 ---
 
-## 7. Technical Primer: The Agentic Loop
+## 8. Technical Primer: The Agentic Loop
 Unlike "Assistants" (Cursor/Windsurf) that help you think, FastAgent is a runtime that **helps you act** in a closed-loop system.
 
 ```mermaid
@@ -162,7 +175,7 @@ graph TD
 
 ---
 
-## 8. Architecture Overview
+## 9. Architecture Overview
 > [!IMPORTANT]
 > For a deep dive into the system design, see: [Full Architecture Documentation](docs/architecture.md)
 
@@ -200,7 +213,7 @@ AgentState {
 
 ---
 
-## 9. Schemas (Deterministic I/O)
+## 10. Schemas (Deterministic I/O)
 
 ### 6.1 Planner Output Schema (Task Graph)
 ```json
@@ -223,7 +236,7 @@ AgentState {
 
 ---
 
-## 10. Technical Sketches (Architectural Drafts)
+## 11. Technical Sketches (Architectural Drafts)
 
 ### 7.1 The Agent Runtime Interface
 ```java
@@ -255,7 +268,7 @@ while (!state.task().isDone()) {
 
 ---
 
-## 11. Roadmap
+## 12. Roadmap
 
 ### Phase 0 — Foundations (Current Stage)
 - [x] Establish the Deterministic Operating Model Thesis
@@ -293,7 +306,7 @@ while (!state.task().isDone()) {
 
 ---
 
-## 12. Repository Structure (Proposed Skeletons)
+## 13. Repository Structure (Proposed Skeletons)
 ```text
 FastAgent/
  ├─ src/             # Core source code
@@ -331,7 +344,7 @@ FastAgent/
 
 ---
 
-## 13. CREAM — The Temporal Context Engine
+## 14. CREAM — The Temporal Context Engine
 **CREAM** (Context Reconstruction Engine & Activity Model) is the optional temporal layer for FastAgent. Originally conceived as a **2.5D Spatial File Explorer & CLI**, CREAM now serves as the "System Memory" and "Timeline" for the agentic runtime.
 
 ### 10.1 From Explorer to Engine
@@ -347,7 +360,7 @@ FastAgent/
 
 ---
 
-## 14. Philosophy
+## 15. Philosophy
 Traditional software executes functions. **FastAgent executes evolving systems.**
 
 The goal is not better prompts; it is **deterministic machine cognition infrastructure**. FastAgent is the missing link in the evolution from primitives to spatial operating environments:
