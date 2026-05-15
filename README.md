@@ -79,35 +79,36 @@ The fundamental difference between FastAgent and traditional AI systems is the s
     (Reactive Text System)             (Stateful Execution Engine)
 ───────────────────────────────────────────────────────────────────
 
-       ┌───────────────┐                  ┌──────────────────────┐
-       │   User Input  │                  │      AgentState      │
-       └───────┬───────┘                  │  (Task, Memory, UI)  │
-               │                          └─────────┬────────────┘
-               ▼                                    │
-       ┌───────────────┐                  ┌──────────▼───────────┐
-       │      LLM      │                  │       Planner        │
-       │  (Text Only)  │                  │  (Steps, Strategy)   │
-       └───────┬───────┘                  └──────────┬───────────┘
-               │                                    │
-               ▼                                    ▼
-       ┌───────────────┐                  ┌──────────────────────┐
-       │  Text Output  │                  │    Execution Loop    │
-       └───────────────┘                  │ Plan → Act → Observe │
-                                          │      → Adjust        │
-                                          └──────────┬───────────┘
-                                                     │
-                                                     ▼
-                                          ┌──────────────────────┐
-                                          │ Tools / UIA / Vision │
-                                          │ (Act on Real System) │
-                                          └──────────┬───────────┘
-                                                     │
-                                                     ▼
-                                          ┌──────────────────────┐
-                                          │    CREAM Timeline    │
-                                          │ (Snapshots, Replay)  │
-                                          └──────────────────────┘
-                                          └──────────┬───────────┘
+       ┌───────────────┐         ┌───────────► ┌──────────────────────┐
+       │   User Input  │         │             │      AgentState      │
+       └───────┬───────┘         │             │  (Task, Memory, UI)  │
+               │                 │             └─────────┬────────────┘
+               ▼                 │                       │
+       ┌───────────────┐         │             ┌─────────▼────────────┐
+       │      LLM      │         │             │       Planner        │
+       │  (Text Only)  │         │             │  (Steps, Strategy)   │
+       └───────┬───────┘         │             └─────────┬────────────┘
+               │                 │                       │
+               ▼                 │                       ▼
+       ┌───────────────┐         │             ┌──────────────────────┐
+       │  Text Output  │         │             │    Execution Loop    │
+       └───────────────┘         │             │ Plan → Act → Observe │
+                                 │             │      → Adjust        │
+                                 │             └─────────┬────────────┘
+                                 │                       │
+                                 │                       ▼
+                                 │             ┌──────────────────────┐
+                                 │             │ Tools / UIA / Vision │
+                                 │             │ (Act on Real System) │
+                                 │             └─────────┬────────────┘
+                                 │                       │
+                                 │                       ▼
+                                 │             ┌──────────────────────┐
+                                 │             │    CREAM Timeline    │
+                                 │             │ (Snapshots, Replay)  │
+                                 └─────────────┴─────────┬────────────┘
+                                                         │
+                                                (Closed-Loop Feedback)
 ```
 
 > **Chatbots talk. FastAgent acts.**
