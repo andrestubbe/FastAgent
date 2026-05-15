@@ -140,9 +140,18 @@ FastAgent is the first agentic system where the "Mind" is not a black box, but a
 ### 4.1 From Fuzzy Memory to Immutable Tracks
 Traditional agents rely on "Memory" (RAG, vector DBs, or recursive summaries), which inevitably becomes fuzzy, inaccurate, and uncontrollable over time. FastAgent replaces this with a **Timeline Track**.
 
+| Feature | Stochastic RAG (Legacy) | Deterministic Timeline (FastAgent) |
+| :--- | :--- | :--- |
+| **Mechanism** | Fuzzy vector similarity search | Exact state-point navigation |
+| **Accuracy** | Probability-based (often hallucinates) | Immutable (100% accurate) |
+| **Context** | "Needle in a haystack" | "Thread in a fabric" |
+| **Replay** | Impossible (Context changes) | Native (Perfect reconstruction) |
+| **Scaling** | Degrades with more data | Stays sharp via hierarchical indexing |
+
 - **Memory is dead. The Track is the future.** Instead of storing what the agent "thinks" it knows, we store exactly what the agent **was** at every millisecond.
 - **Git for Thoughts**: Every perception, decision, and action is a Node in a persistent graph.
 - **Zero-Loss Reconstruction**: Summaries are not stored; they are **reconstructed on-demand** from the immutable track, ensuring 100% accuracy and zero information decay.
+
 
 ### 4.2 Introspection & Debugging
 Because the Mind is a Track of discrete states, you can:
@@ -323,7 +332,7 @@ while (!state.task().isDone()) {
 
 ### Phase 1 — AgentCore (v0.1 → v0.3)
 **Goal**: Minimal runnable agent with deterministic loop.
-- [ ] `FastAgentCore` class & Deterministic Scheduler
+- [ ] `FastRuntimeCore` class & Deterministic Scheduler
 - [ ] Agent State Model (Task, Memory, World, Error)
 - [ ] Execution Loop (Plan → Act → Observe → Adjust)
 - [ ] Integration with `FastTool` & `FastToolChain`
@@ -356,7 +365,7 @@ while (!state.task().isDone()) {
 FastAgent/
  ├─ src/             # Core source code
  │   ├─ core/        # State Machine & Execution Loop
- │   │   ├─ FastAgentCore.java
+ │   │   ├─ FastRuntimeCore.java
  │   │   ├─ AgentState.java
  │   │   ├─ Planner.java
  │   │   ├─ Step.java
@@ -405,7 +414,7 @@ FastAgent/
 
 ---
 
-## 16. The Execution Kernel: Frames & Intents
+## 15. The Execution Kernel: Frames & Intents
 FastAgent does not run loose loops; it operates on a **Deterministic Frame Schedule**, treating AI autonomy as an Operating System problem.
 
 ### 16.1 Deterministic Frames (The System Heartbeat)
@@ -425,7 +434,7 @@ Instead of a static list of tasks, FastAgent maintains a dynamic **Execution Int
 
 ---
 
-## 17. Philosophy
+## 16. Philosophy
 Traditional software executes functions. **FastAgent executes evolving systems.**
 
 The goal is not better prompts; it is **deterministic machine cognition infrastructure**. FastAgent is the missing link in the evolution from primitives to spatial operating environments:

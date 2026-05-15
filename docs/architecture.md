@@ -1,6 +1,6 @@
-# FastAgent Architecture
+# FastRuntime Architecture
 
-FastAgent is not a framework; it is an Agent Runtime Model. The core cycle is defined by: **State → Plan → Act → Observe → Adjust**.
+FastRuntime is not a framework; it is an Agent Runtime Model. The core cycle is defined by: **State → Plan → Act → Observe → Adjust**.
 
 ---
 
@@ -8,7 +8,7 @@ FastAgent is not a framework; it is an Agent Runtime Model. The core cycle is de
 
 ```text
                 ┌──────────────────────────┐
-                │      FastAgentCore       │
+                │      FastRuntimeCore     │
                 │  (State Machine + Loop)  │
                 └─────────────┬────────────┘
                               │
