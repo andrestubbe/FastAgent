@@ -76,40 +76,65 @@ The fundamental difference between FastAgent and traditional AI systems is the s
 ### Architectural Contrast (ASCII)
 ```text
            CHATBOT                               RUNTIME
-     (reactive text system)                (stateful execution engine)
-───────────────────────────────────────────────────────────────
+    (Reactive Text System)             (Stateful Execution Engine)
+───────────────────────────────────────────────────────────────────
 
-        ┌───────────────┐                     ┌──────────────────────┐
-        │   User Input   │                     │      AgentState      │
-        └───────┬───────┘                     │  (task, memory, ui)  │
-                │                               └─────────┬──────────┘
-                ▼                                         │
-        ┌───────────────┐                     ┌───────────▼──────────┐
-        │      LLM       │                     │       Planner         │
-        │ (text only)    │                     │ (steps, strategy)     │
-        └───────┬────────┘                     └───────────┬──────────┘
-                │                                         │
-                ▼                                         ▼
-        ┌───────────────┐                     ┌────────────────────────┐
-        │   Text Output  │                     │     Execution Loop     │
-        └───────────────┘                     │ plan → act → observe   │
-                                               │       → adjust         │
-                                               └───────────┬──────────┘
-                                                           │
-                                                           ▼
-                                               ┌────────────────────────┐
-                                               │   Tools / UIA / Vision │
-                                               │ (act on real system)   │
-                                               └───────────┬──────────┘
-                                                           │
-                                                           ▼
-                                               ┌────────────────────────┐
-                                               │     CREAM Timeline     │
-                                               │ (snapshots, replay)    │
-                                               └────────────────────────┘
+       ┌───────────────┐                  ┌──────────────────────┐
+       │   User Input  │                  │      AgentState      │
+       └───────┬───────┘                  │  (Task, Memory, UI)  │
+               │                          └─────────┬────────────┘
+               ▼                                    │
+       ┌───────────────┐                  ┌──────────▼───────────┐
+       │      LLM      │                  │       Planner        │
+       │  (Text Only)  │                  │  (Steps, Strategy)   │
+       └───────┬───────┘                  └──────────┬───────────┘
+               │                                    │
+               ▼                                    ▼
+       ┌───────────────┐                  ┌──────────────────────┐
+       │  Text Output  │                  │    Execution Loop    │
+       └───────────────┘                  │ Plan → Act → Observe │
+                                          │      → Adjust        │
+                                          └──────────┬───────────┘
+                                                     │
+                                                     ▼
+                                          ┌──────────────────────┐
+                                          │ Tools / UIA / Vision │
+                                          │ (Act on Real System) │
+                                          └──────────┬───────────┘
+                                                     │
+                                                     ▼
+                                          ┌──────────────────────┐
+                                          │    CREAM Timeline    │
+                                          │ (Snapshots, Replay)  │
+                                          └──────────────────────┘
+                                          └──────────┬───────────┘
 ```
 
 > **Chatbots talk. FastAgent acts.**
+
+---
+
+## 4. The Mind of an Agent: Persistent State & Timeline
+FastAgent is the first agentic system where the "Mind" is not a black box, but a **transparent, deterministic state graph**.
+
+### 4.1 From Fuzzy Memory to Immutable Tracks
+Traditional agents rely on "Memory" (RAG, vector DBs, or recursive summaries), which inevitably becomes fuzzy, inaccurate, and uncontrollable over time. FastAgent replaces this with a **Timeline Track**.
+
+- **Memory is dead. The Track is the future.** Instead of storing what the agent "thinks" it knows, we store exactly what the agent **was** at every millisecond.
+- **Git for Thoughts**: Every perception, decision, and action is a Node in a persistent graph.
+- **Zero-Loss Reconstruction**: Summaries are not stored; they are **reconstructed on-demand** from the immutable track, ensuring 100% accuracy and zero information decay.
+
+### 4.2 Introspection & Debugging
+Because the Mind is a Track of discrete states, you can:
+1.  **Jump to any Step**: Open State #42 and see exactly what the UI looked like and what the agent was planning.
+2.  **Deterministic Replay**: Provide the same seed and input to reproduce the exact same thought process.
+3.  **Forking Futures**: Branch off from a specific state to test alternative agent strategies without losing the original path.
+
+> **FastAgent is an MRI for Machine Cognition. You don't just see the output; you see the firing of every neuron in the execution loop.**
+
+> [!TIP]
+> **Explore the Mind Architecture**: [Mind Architecture (Schema & API)](docs/mind-architecture.md)  
+> **See the Debugger Concept**: [Mind Debugger (UI & Features)](docs/mind-debugger.md)
 
 ---
 
