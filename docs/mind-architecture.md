@@ -55,28 +55,52 @@ Each node in the timeline track contains the full context of the agent at that s
 
 ---
 
-## 2. State Navigator API
-The `TrackStore` allows for non-linear navigation through the agent's history.
+## 2. State Navigator API (Logical Structure)
+Thinking in terms of a `TrackStore` (File, DB, or Append-Log).
 
-```java
-public interface TrackStore {
-    /** Returns a specific state node by ID */
-    StateNode getById(String id);
-    
-    /** Returns the entire timeline for a branch, sorted by step index */
-    List<StateNode> getBranch(String branchId);
-    
-    /** Creates a new branch from an existing state (Forking) */
-    StateNode fork(String baseStateId, String newBranchId);
+```typescript
+interface TrackStore {
+  getById(id: string): StateNode | null;
+  getNext(id: string): StateNode | null;
+  getPrev(id: string): StateNode | null;
+  getChildren(id: string): StateNode[];
+  getBranch(branchId: string): StateNode[];
+  query(filter: (s: StateNode) => boolean): StateNode[];
 }
 ```
 
+### Primitive Navigation
+- **jumpTo(id)**: Direct debug jump.
+- **replayFrom(id)**: Deterministic reproduction from a specific point.
+- **timeline(sessionId)**: Complete session overview.
+
 ---
 
-## 3. State Forking (Alternative Futures)
-Forking allows the developer (or the agent itself) to explore alternative execution paths without corrupting the original timeline.
+## 3. State Forking Mechanism (Alternative Futures)
+Forking is simply creating a new `branchId` with a specific `parentId`.
 
-1.  **Select Base**: Pick `state-00042`.
-2.  **Create Branch**: Generate a new `branchId` (e.g., `optimization-test`).
-3.  **Execute**: The agent resumes from the base state but commits new nodes to the new branch.
-4.  **Compare**: Use the **Mind Debugger** to compare the success rates of different branches.
+```typescript
+function forkState(baseId: string, newBranchId: string): StateNode {
+  const base = store.getById(baseId);
+  if (!base) throw new Error("Base state not found");
+
+  const forkRoot: StateNode = {
+    ...base,
+    id: generateId(),
+    parentId: base.id,
+    branchId: newBranchId,
+    stepIndex: base.stepIndex + 1,
+    meta: {
+      ...base.meta,
+      forkedFrom: base.id
+    }
+  };
+
+  store.save(forkRoot);
+  return forkRoot;
+}
+```
+
+### LLM Determinism
+For the fork to remain deterministic, the **deterministicSeed** must be preserved along with the same prompt and tool parameters.
+

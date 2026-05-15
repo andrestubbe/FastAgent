@@ -4,28 +4,38 @@ The **Mind Debugger** is the primary UI for inspecting, debugging, and replaying
 
 ---
 
-## 1. UI Layout Strategy
+## 1. UI Layout Strategy (Three-Column System)
 
-### Left: Timeline List
-- A vertical list of all `State Nodes`.
-- Each entry shows: `#Index [Phase] ActionName (Status)`.
-- Color-coded: Success (Green), Failure (Red), Replan (Yellow).
+### Column A: Timeline List (Left)
+- **Entries**: `#42 [ACT] vscode: focusWindow (SUCCESS)`.
+- **Filtering**: Phase, Tag, Error, Tool.
 
-### Center: State Details (MRI View)
-Tabs for deep introspection:
-- **Perception**: The UIA snapshot and focused windows at the time of decision.
-- **Reasoning**: The raw LLM thought process and goal stack.
-- **Plan**: The proposed task graph for this specific step.
-- **Action/Obs**: The exact tool call and the resulting system change.
+### Column B: State Details / MRI View (Center)
+- **Tabs**: Input | Internal | Decision | Action | Observation | Raw JSON.
+- **Functionality**: Deep diffing between State N and N+1.
 
-### Right: Context & Replay
-- **World Viewer**: A thumbnail or tree view of the UI state (powered by FastUIA/FastVision).
-- **Branch Tree**: A visual graph showing the main timeline and any experimental forks.
-- **Replay Controls**: [Jump to State] [Replay from here] [Fork Branch].
+### Column C: Context & Visuals (Right)
+- **UIA Snapshot**: Thumbnail or Tree View.
+- **Goal Stack**: Visualized hierarchy of intents.
+- **Branch Tree**: Interactive graph of forks.
 
 ---
 
-## 2. Key Features
+## 2. Debugger Pseudo-Code (Java Swing Style)
+```java
+class MindDebugger extends JFrame {
+    JList<StateNode> timelineList;
+    JTextArea jsonView;
+    JPanel detailsPanel;
+    JTree branchTree;
+
+    void onSelectState(StateNode s) {
+        jsonView.setText(prettyJson(s));
+        detailsPanel.showState(s);
+        branchTree.setSelectionPath(pathForState(s));
+    }
+}
+```
 
 ### 1. The "MRI" Diff View
 Compare `State N` with `State N+1`.

@@ -11,6 +11,8 @@
 
 **FastAgent is not an Agent Framework, but an Agent Runtime Model with deterministic state, replay, and timeline.**
 
+**FastAgent treats AI systems as operating systems problems, not prompt engineering problems.**
+
 **FastAgent = Plan → Act → Observe → Adapt.**
 
 ---
@@ -386,7 +388,27 @@ FastAgent/
 
 ---
 
-## 15. Philosophy
+## 16. The Execution Kernel: Frames & Intents
+FastAgent does not run loose loops; it operates on a **Deterministic Frame Schedule**, treating AI autonomy as an Operating System problem.
+
+### 16.1 Deterministic Frames (The System Heartbeat)
+Following the architecture of Game Engines and OS Schedulers, FastAgent divides execution into discrete **Frames**. Each frame follows a rigid sequence to ensure 100% replayability:
+1.  **Ingest Phase**: Collect system events and capture UI/Vision snapshots.
+2.  **Internal Phase**: Update Memory (Commit) and resolve the Intent Graph.
+3.  **Actuation Phase**: Execute tools and verify state transitions.
+4.  **Commit Phase**: Archive the frame to the CREAM Timeline.
+
+### 16.2 Hierarchical Intent Graph
+Instead of a static list of tasks, FastAgent maintains a dynamic **Execution Intent Graph**.
+- **Adaptive**: High-level intents (e.g., "Fix Bug") dynamically spawn sub-intents (Research, Plan, Simulate, Execute, Verify).
+- **Self-Correcting**: If a verification phase fails, the graph automatically injects a "Recovery" sub-intent to the schedule.
+
+> [!TIP]
+> **Deep Dive into Scheduling**: [Frames & Intent Scheduling](docs/frames-and-scheduling.md)
+
+---
+
+## 17. Philosophy
 Traditional software executes functions. **FastAgent executes evolving systems.**
 
 The goal is not better prompts; it is **deterministic machine cognition infrastructure**. FastAgent is the missing link in the evolution from primitives to spatial operating environments:
