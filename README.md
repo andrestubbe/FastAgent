@@ -49,7 +49,58 @@ Most "Unified Agent Systems" (e.g., Agno, LangChain) are built on **Stochastic W
 
 ---
 
-## 3. Observable Execution Trace (Sample)
+## 3. Chatbot vs. Runtime
+The fundamental difference between FastAgent and traditional AI systems is the shift from **reactive speech** to **deterministic action**.
+
+### Comparison Overview
+| Feature | Chatbot (Reactive Text System) | FastAgent (Stateful Runtime) |
+| :--- | :--- | :--- |
+| **Model** | Input → LLM → Output | **State → Plan → Act → Observe → Replay** |
+| **Capability** | Talking / Suggesting | **Acting / Executing** |
+| **Nature** | A mouth without a body | **Brain + Body + Nervous System** |
+| **Integrations**| API Wrappers | **OS-Level (Vision, UIA, CLI, Native)** |
+
+### Architectural Contrast (ASCII)
+```text
+           CHATBOT                               RUNTIME
+     (reactive text system)                (stateful execution engine)
+───────────────────────────────────────────────────────────────
+
+        ┌───────────────┐                     ┌──────────────────────┐
+        │   User Input   │                     │      AgentState      │
+        └───────┬───────┘                     │  (task, memory, ui)  │
+                │                               └─────────┬──────────┘
+                ▼                                         │
+        ┌───────────────┐                     ┌───────────▼──────────┐
+        │      LLM       │                     │       Planner         │
+        │ (text only)    │                     │ (steps, strategy)     │
+        └───────┬────────┘                     └───────────┬──────────┘
+                │                                         │
+                ▼                                         ▼
+        ┌───────────────┐                     ┌────────────────────────┐
+        │   Text Output  │                     │     Execution Loop     │
+        └───────────────┘                     │ plan → act → observe   │
+                                               │       → adjust         │
+                                               └───────────┬──────────┘
+                                                           │
+                                                           ▼
+                                               ┌────────────────────────┐
+                                               │   Tools / UIA / Vision │
+                                               │ (act on real system)   │
+                                               └───────────┬──────────┘
+                                                           │
+                                                           ▼
+                                               ┌────────────────────────┐
+                                               │     CREAM Timeline     │
+                                               │ (snapshots, replay)    │
+                                               └────────────────────────┘
+```
+
+> **Chatbots talk. FastAgent acts.**
+
+---
+
+## 4. Observable Execution Trace (Sample)
 In FastAgent, every run produces a transparent, replayable trace:
 ```log
 [04:00:01] STATE_COMMIT: WorldState updated (Notepad.exe detected)
@@ -64,7 +115,7 @@ In FastAgent, every run produces a transparent, replayable trace:
 
 ---
 
-## 4. The Ecosystem Map: The Path to CREAM
+## 5. The Ecosystem Map: The Path to CREAM
 FastAgent is the cognitive runtime in a larger evolution of native performance.
 
 ```mermaid
@@ -84,7 +135,7 @@ graph TD
 
 ---
 
-## 5. Design Principles
+## 6. Design Principles
 
 - **Deterministic by Default**: Equal Input + Equal Memory = Equal Execution path. Every transition is explicit and replayable.
 - **Observable Execution**: Every action is inspectable through explicit runtime boundaries. Nothing mutates invisibly.
@@ -94,7 +145,7 @@ graph TD
 
 ---
 
-## 6. Technical Primer: The Agentic Loop
+## 7. Technical Primer: The Agentic Loop
 Unlike "Assistants" (Cursor/Windsurf) that help you think, FastAgent is a runtime that **helps you act** in a closed-loop system.
 
 ```mermaid
@@ -111,7 +162,7 @@ graph TD
 
 ---
 
-## 7. Architecture Overview
+## 8. Architecture Overview
 > [!IMPORTANT]
 > For a deep dive into the system design, see: [Full Architecture Documentation](docs/architecture.md)
 
@@ -149,7 +200,7 @@ AgentState {
 
 ---
 
-## 8. Schemas (Deterministic I/O)
+## 9. Schemas (Deterministic I/O)
 
 ### 6.1 Planner Output Schema (Task Graph)
 ```json
@@ -172,7 +223,7 @@ AgentState {
 
 ---
 
-## 9. Technical Sketches (Architectural Drafts)
+## 10. Technical Sketches (Architectural Drafts)
 
 ### 7.1 The Agent Runtime Interface
 ```java
@@ -204,7 +255,7 @@ while (!state.task().isDone()) {
 
 ---
 
-## 10. Roadmap
+## 11. Roadmap
 
 ### Phase 0 — Foundations (Current Stage)
 - [x] Establish the Deterministic Operating Model Thesis
@@ -242,7 +293,7 @@ while (!state.task().isDone()) {
 
 ---
 
-## 11. Repository Structure (Proposed Skeletons)
+## 12. Repository Structure (Proposed Skeletons)
 ```text
 FastAgent/
  ├─ src/             # Core source code
@@ -280,7 +331,7 @@ FastAgent/
 
 ---
 
-## 12. CREAM — The Temporal Context Engine
+## 13. CREAM — The Temporal Context Engine
 **CREAM** (Context Reconstruction Engine & Activity Model) is the optional temporal layer for FastAgent. Originally conceived as a **2.5D Spatial File Explorer & CLI**, CREAM now serves as the "System Memory" and "Timeline" for the agentic runtime.
 
 ### 10.1 From Explorer to Engine
@@ -296,7 +347,7 @@ FastAgent/
 
 ---
 
-## 13. Philosophy
+## 14. Philosophy
 Traditional software executes functions. **FastAgent executes evolving systems.**
 
 The goal is not better prompts; it is **deterministic machine cognition infrastructure**. FastAgent is the missing link in the evolution from primitives to spatial operating environments:
