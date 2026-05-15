@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Repo](https://img.shields.io/badge/Repo-GitHub-181717.svg?logo=github)](https://github.com/andrestubbe/FastAgent)
 
-**FastAgent ist kein Chatbot, kein Workflow‑Engine‑Wrapper und kein Planner‑Loop. FastAgent ist ein deterministischer, zustandsbehafteter, tool‑fähiger Agent‑Runtime‑Core, der auf FastAI, FastUIA, FastVision und FastTool aufsetzt.**
+**FastAgent ist kein Chatbot, kein Workflow‑Engine‑Wrapper und kein Planner‑Loop. FastAgent ist ein deterministischer, zustandsbehafteter, tool‑fähiger Agent‑Runtime‑Core, der auf dem FastAI-Ecosystem aufsetzt.**
 
 **FastAgent = Planen → Handeln → Beobachten → Anpassen.**
 
@@ -15,38 +15,58 @@
 
 ## 1. Vision
 FastAgent soll das erste lokale, modulare, deterministische Agent‑Runtime‑System werden, das:
-- **Echte State Machines** nutzt
-- **Tools und UI‑Automation** sicher ausführt
-- **Memory und RAG** integriert
-- **Fehler erkennt** und replanten kann
-- **Sub‑Agents** orchestriert
-- **Komplett offline** laufen kann
+- **Echte State Machines** nutzt (keine unendlichen Prompt-Loops)
+- **Tools und UI‑Automation** sicher ausführt (via JNI/FastUIA)
+- **Memory und RAG** integriert (FastVectorDB)
+- **Fehler erkennt** und autonom replanten kann
+- **Sub‑Agents** orchestriert (A2A-Protokoll)
+- **Komplett offline** auf GPU/CPU läuft
 
 > Kein Agent‑Zoo. Keine Halluzinations‑APIs. Keine 500‑Zeilen‑Prompts.
 
 ---
 
-## 2. Core Principles
-- **Determinismus**: Gleiche Inputs → Gleiche Outputs.
-- **Minimalismus**: Kleine API, klare Primitive.
-- **Modularität**: Jedes Feature ist ein Add‑On.
-- **Observability**: Jeder Schritt ist sichtbar.
-- **Safety**: Kein unkontrolliertes Tool‑Calling.
-- **Local‑First**: GPU/CPU, keine Cloud‑Abhängigkeit.
+## 2. Technical Primer: Der Agentic Loop
+Im Gegensatz zu reinen LLM-Wrappern arbeitet FastAgent in einem **Closed-Loop System**. Wir gehen nicht von Erfolg aus; wir verifizieren ihn.
+
+```mermaid
+graph TD
+    A[Perception: FastVision + FastUIA] --> B[State Update: World Model]
+    B --> C[Reasoning: FastBrain/FastAI]
+    C --> D{Plan: Sequential Tools}
+    D --> E[Execution: FastAgentTools]
+    E --> F[Observation: Verify Change]
+    F -->|Success| G[Next Step / Goal Reached]
+    F -->|Failure| H[Self-Correction / Replanning]
+    H --> C
+```
 
 ---
 
 ## 3. Architecture Overview
-### 3.1 Core Modules
-| Module | Aufgabe |
-|--------|---------|
-| **FastAgentCore** | State Machine, Planner, Execution Loop |
-| **FastAgentMemory** | Short‑Term + Long‑Term Memory |
-| **FastAgentTools** | Tool Registry + Execution |
-| **FastAgentUI** | UI‑Automation via FastUIA + Vision |
-| **FastAgentBrain** | Reasoning via FastModel |
-| **FastAgentMonitor** | Feedback, Error Detection, Replanning |
-| **FastAgentRouter** | Multi‑Agent Coordination |
+
+### 3.1 Die Anatomie von FastAgent (Internal Layers)
+| Layer | Komponente | Aufgabe |
+|-------|-----------|----------------|
+| **Core** | `FastAgentCore` | State Machine und Execution Planner. |
+| **Memory** | `FastAgentMemory` | Short‑Term + Long‑Term Memory (RAG). |
+| **Tools** | `FastAgentTools` | Registry und Execution für Tool-Chains. |
+| **UI/Vision** | `FastAgentUI` | UI-Automation und Screen-Understanding. |
+| **Reasoning** | `FastAgentBrain` | Lokale Inference Engine (FastModel). |
+| **Monitoring** | `FastAgentMonitor` | Feedback, Error Detection und Recovery. |
+| **Router** | `FastAgentRouter` | Multi-Agent Orchestrierung via A2A. |
+
+### 3.2 Das FastAI Ecosystem (Modul-Matrix)
+FastAgent ist das Bindeglied zwischen Gehirn (FastAI) und Körper (Windows-Native).
+
+| Add‑On | Mini‑Beschreibung |
+| :--- | :--- |
+| **FastModel** | Lokale GGUF/ONNX Runtime & Token Management. |
+| **FastVision** | Bildanalyse, OCR, Screenshots, UI‑Kontext. |
+| **FastVectorDB** | SIMD‑optimierter Retrieval‑Store für RAG/Memory. |
+| **FastToolChain** | Deterministische Tool-Sequenzen (kein Chaos). |
+| **FastAudio** | Native Speech‑to‑Text (STT) & Text‑to‑Speech (TTS). |
+| **FastGuard** | Lokale Safety/Filter & Guardrails. |
 
 ---
 
@@ -60,44 +80,21 @@ FastAgent soll das erste lokale, modulare, deterministische Agent‑Runtime‑Sy
 - [ ] Add Tool Registry (FastTool + FastToolChain)
 - [ ] Add UI‑Action Bridge (FastUIA integration)
 - [ ] Add Vision Bridge (FastVision screenshot + OCR)
-- [ ] Add Memory v1 (short‑term only)
-- [ ] Add Logging + Trace (deterministic replay)
 
 **Deliverable**: A minimal agent that can: *“Open Notepad → type text → save file”.*
 
 ### Phase 2 — Intelligence Layer (v0.4 → v0.6)
 **Goal**: Agent becomes adaptive, reflective, and context‑aware.
-- [ ] Memory v2 (long‑term + vector store)
+- [ ] Memory v2 (long-term + vector store)
 - [ ] RAG Integration (FastRAG + FastVectorDB)
 - [ ] Reflection Loop (self‑critique + correction)
 - [ ] Error Detection (UI mismatch, tool failure, invalid state)
-- [ ] Replanning Engine (retry with new strategy)
-- [ ] Human‑in‑the‑Loop (ask for clarification when stuck)
-
-**Deliverable**: Agent can complete multi-step tasks reliably, even with UI changes.
 
 ### Phase 3 — Multi‑Agent System (v0.7 → v0.9)
-**Goal**: Specialized agents collaborating.
+**Goal**: Specialized agents collaborating via A2A Protocol.
 - [ ] Agent Router (task delegation)
-- [ ] Coding Agent (writes + executes code)
-- [ ] Retrieval Agent (searches, summarizes, validates)
-- [ ] Citation Agent (verifies claims)
-- [ ] UI Agent (navigates apps, clicks, types)
-- [ ] A2A Protocol (agent‑to‑agent messaging)
-- [ ] MCP Integration (optional external tools)
-
-**Deliverable**: A system where agents coordinate like microservices.
-
-### Phase 4 — Production Runtime (v1.0)
-**Goal**: Stable, documented, extensible agent platform.
-- [ ] Stable API (Java + JSON command schema)
-- [ ] Plugin System (third‑party tools + agents)
-- [ ] Security Sandbox (tool permissions, UI scopes)
-- [ ] Benchmark Suite (latency, reliability, success rate)
-- [ ] Demo Suite (UI automation, coding tasks, workflows)
-- [ ] Documentation (architecture, API, examples)
-
-**Deliverable**: FastAgent v1.0 — a full local agent runtime.
+- [ ] Specialized Agents (Coding, Retrieval, UI, Citation)
+- [ ] A2A Protocol (Agent-to-Agent Messaging)
 
 ---
 
@@ -105,6 +102,7 @@ FastAgent soll das erste lokale, modulare, deterministische Agent‑Runtime‑Sy
 ```java
 FastAgent agent = FastAgent.create();
 
+// Der Agent plant, handelt und verifiziert das Ergebnis autonom.
 agent.run("Open Notepad, write 'Hello Andre', save it to Desktop.");
 ```
 
@@ -113,11 +111,7 @@ agent.run("Open Notepad, write 'Hello Andre', save it to Desktop.");
 ## 6. Philosophy
 FastAgent ist nicht “AutoGPT für Java”. FastAgent ist ein **OS‑Level Execution Engine** für echte Autonomie:
 - **Versteht die Welt** (Vision + UIA)
-- **Plant Schritte**
-- **Führt Tools aus**
-- **Beobachtet Ergebnisse**
-- **Korrigiert Fehler**
-- **Lernt aus Erfahrung**
+- **Plant Schritte** | **Führt Tools aus** | **Beobachtet Ergebnisse** | **Korrigiert Fehler**
 
 **Ein Agent, der wirklich arbeitet, nicht nur redet.**
 
@@ -125,5 +119,5 @@ FastAgent ist nicht “AutoGPT für Java”. FastAgent ist ein **OS‑Level Exec
 **Made with ⚡ by Andre Stubbe**
 
 <!-- 
-SEO Keywords: agentic ai, autonomous agents, java agents, jni, windows api, fastjava, state machine, local llm, automation
+SEO Keywords: agentic ai, autonomous agents, java agents, jni, windows api, fastjava, state machine, local llm, automation, rag, vectordb
 -->
