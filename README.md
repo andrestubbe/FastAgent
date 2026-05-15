@@ -30,6 +30,23 @@ Most current agent systems are built on hidden state mutations and opaque prompt
 
 ---
 
+## 1.1 The Dualism: Engine vs. Mind
+To move beyond the limitations of legacy frameworks, FastAgent is built as a decoupled two-layer system.
+
+### 1. FastRuntime (The Execution Engine)
+The **Engine** is the deterministic substrate. It handles the low-level "Operating System" tasks of an agent.
+- **Responsibility**: Frames, State Management, Timeline (CREAM), UIA Perception, Tool Boundaries.
+- **Identity**: The Brain/Body.
+
+### 2. FastAgent (The Cognitive Mind)
+The **Mind** is the behavior layer. It is a "user-space" personality that runs on top of the FastRuntime.
+- **Responsibility**: Goals, Intent Graphs, Strategic Policies, Personality, Knowledge.
+- **Identity**: The Personality.
+
+> **FastRuntime is the Engine. FastAgent is the Mind.**
+
+---
+
 ## 2. Why FastAgent is NOT an Agent Framework
 FastAgent is frequently compared to frameworks like **Agno**, **LangChain**, or **HKUDS-FastAgent**. This is a category error.
 
