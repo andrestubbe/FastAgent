@@ -1,4 +1,4 @@
-# FastAgent — Roadmap to a Real Agentic Runtime
+# FastAgent — Deterministic Agentic Runtime
 
 [![Version](https://img.shields.io/badge/Version-0.1.0--alpha-orange.svg)](https://github.com/andrestubbe/FastAgent/releases)
 [![Build](https://img.shields.io/github/actions/workflow/status/andrestubbe/FastAgent/maven.yml?branch=main)](https://github.com/andrestubbe/FastAgent/actions)
@@ -7,67 +7,64 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Repo](https://img.shields.io/badge/Repo-GitHub-181717.svg?logo=github)](https://github.com/andrestubbe/FastAgent)
 
-**FastAgent is not a chatbot, not a workflow engine wrapper, and not a planner loop. FastAgent is a deterministic, stateful, tool-capable agent runtime core built on the FastJava ecosystem.**
-
-**FastAgent = Plan → Act → Observe → Adapt.**
+**FastAgent is a deterministic agent runtime for building persistent, observable, and composable AI systems. It is not another prompt-chaining framework; it is an infrastructure layer for autonomous execution.**
 
 ---
 
-## 1. Vision
-FastAgent aims to be the first local, modular, deterministic agent runtime system that:
-- **Uses real State Machines** (no infinite prompt loops)
-- **Executes Tools and UI-Automation securely** (via JNI/FastUIA)
-- **Integrates Memory and RAG** (FastVectorDB)
-- **Detects errors** and can replan autonomously
-- **Orchestrates Sub-Agents** (A2A Protocol)
-- **Runs completely offline** on GPU/CPU
+## 1. The Thesis: Runtime vs. Chat Wrapper
+Most current agent systems are built on hidden state mutations and opaque prompt-stuffing. FastAgent treats agents as **Runtime Systems**, focusing on:
 
-> **No Agent Zoos. No Hallucination APIs. No 500-line Prompts.**
+- **Deterministic Task Scheduling**
+- **Explicit Execution Phases**
+- **Immutable State Snapshots**
+- **Structural Memory Persistence**
+- **Observable Tool Boundaries**
+- **Retained Execution Graphs**
+
+### Why this matters
+Traditional "agents" (chained prompts) are nearly impossible to debug, replay, or scale. FastAgent ensures that **Equal Input + Equal Memory = Equal Execution Path.**
 
 ---
 
-## 2. Technical Primer: The Agentic Loop
-Unlike standard chatbot wrappers, FastAgent operates in a **Closed-Loop System**. We do not assume success; we verify it.
+## 2. Core Execution Model
+FastAgent operates through a strictly defined, observable pipeline:
 
 ```mermaid
 graph TD
-    A[Perception: FastVision + FastUIA] --> B[State Update: World Model]
-    B --> C[Reasoning: FastBrain/FastAI]
-    C --> D{Plan: Sequential Tools}
-    D --> E[Execution: FastAgentTools]
-    E --> F[Observation: Verify Change]
-    F -->|Success| G[Next Step / Goal Reached]
-    F -->|Failure| H[Self-Correction / Replanning]
-    H --> C
+    Input[Input] --> Intent[Intent Resolution]
+    Intent --> Graph[Task Graph Construction]
+    Graph --> Scheduler[Deterministic Scheduler]
+    Scheduler --> Boundary[Tool Execution Boundary]
+    Boundary --> Snapshot[State Snapshot]
+    Snapshot --> Commit[Memory Commit]
+    Commit --> Observe[Render / Observe]
 ```
 
 ---
 
-## 3. Architecture Overview
+## 3. Design Principles
 
-### 3.1 Agent State Model
-To ensure determinism, the agent maintains a strictly typed state:
-```text
-AgentState {
-  TaskState    // Current goals, steps, and progress
-  MemoryState  // Context, past actions, and learned facts
-  WorldState   // UI hierarchy, open windows, process list
-  ErrorState   // Failure modes, recovery attempts, and thresholds
-}
-```
+- **Deterministic by Default**: Reasoning is represented as retained execution state, ensuring replayable transitions.
+- **Observable Execution**: Every action is inspectable. No uncontrolled side effects or invisible state mutations.
+- **Structural Memory**: Memory is a queryable graph, not a hidden text buffer.
+- **Tool Virtualization**: Tools execute through explicit runtime boundaries, ensuring safety and reliability.
+- **Infrastructure-First**: FastAgent is a runtime for machine cognition, not a chatbot skin.
 
-### 3.2 Anatomy of FastAgent (Internal Layers)
+---
+
+## 4. Architecture Overview
+
+### 4.1 Anatomy of FastAgent (Internal Layers)
 | Layer | Component | Responsibility |
 |-------|-----------|----------------|
 | **Core** | `FastAgentCore` | State Machine and Execution Planner. |
-| **Memory** | `FastAgentMemory` | Short-term + Long-term memory (RAG). |
-| **Tools** | `FastAgentTools` | Registry and execution for tool chains. |
-| **UI/Vision** | `FastAgentUI` | UI automation and screen understanding. |
+| **Memory** | `FastAgentMemory` | Structural persistence and RAG. |
+| **Tools** | `FastAgentTools` | Explicit runtime boundaries for native tools. |
+| **UI/Vision** | `FastAgentUI` | System perception via FastUIA & FastVision. |
 | **Reasoning** | `FastAgentBrain` | Local inference engine (FastModel). |
 | **Monitoring** | `FastAgentMonitor` | Feedback, error detection, and recovery. |
-| **Router** | `FastAgentRouter` | Multi-agent orchestration via A2A. |
 
-### 3.3 The FastAI Ecosystem (Module Matrix)
+### 4.2 The FastAI Ecosystem (Module Matrix)
 | Module | Role | Description |
 | :--- | :--- | :--- |
 | **FastModel** | Reasoning | Local GGUF/ONNX runtime & token management. |
@@ -80,10 +77,9 @@ AgentState {
 
 ---
 
-## 4. Schemas (Deterministic I/O)
+## 5. Schemas (Deterministic I/O)
 
-### 4.1 Planner Output Schema
-The Brain must output a structured list of actionable steps:
+### 5.1 Planner Output Schema (Task Graph)
 ```json
 {
   "steps": [
@@ -94,8 +90,7 @@ The Brain must output a structured list of actionable steps:
 }
 ```
 
-### 4.2 Tool Call Schema
-The Execution engine maps these steps to specific native tools:
+### 5.2 Tool Call Schema (Execution Boundary)
 ```json
 {
   "tool": "uia.click",
@@ -105,137 +100,73 @@ The Execution engine maps these steps to specific native tools:
 
 ---
 
-## 5. Technical Sketches (Architectural Drafts)
+## 6. Technical Sketches
 
-### 5.1 The Agent Interface
+### 6.1 The Agent Runtime Interface
 ```java
 public interface FastAgent {
     // Static factory for version 0.1
     static FastAgent create() { return new FastAgentCore(); }
 
-    /** Executes a high-level task autonomously */
+    /** Executes a high-level task through the deterministic runtime */
     void run(String goal);
 
-    /** Returns the current internal state of the agent */
-    AgentState getState();
+    /** Returns an immutable snapshot of the current agent state */
+    AgentState getSnapshot();
 }
 ```
 
-### 5.2 The State Model
+### 6.4 The Deterministic Execution Loop
+The core cycle of FastAgent ensures that every transition is verifiable and every state change is logged:
+
 ```java
-public record AgentState(
-    TaskState task,
-    MemoryState memory,
-    WorldState world,
-    ErrorState error
-) {}
+while (!state.task().isDone()) {
+    // 1. Logic: What should happen next?
+    Plan plan = planner.plan(state);
+    Step step = plan.nextStep();
 
-public enum TaskStatus {
-    IDLE, PLANNING, EXECUTING, OBSERVING, SUCCESS, FAILED
-}
-```
+    // 2. Actuation: Perform the native action
+    Observation obs = executor.execute(step);
 
-### 5.3 The Planner & Executor
-```java
-public interface Planner {
-    /** Decomposes a goal into a list of atomic steps */
-    List<AgentStep> plan(String goal, AgentState context);
-}
-
-public interface ToolExecutor {
-    /** Executes a specific tool call via JNI/FastJava */
-    ToolResult execute(ToolCall call);
+    // 3. Verification: Did it work?
+    state = monitor.update(state, obs);
+    
+    // Optional: Log snapshot for deterministic replay
+    log.snapshot(state);
 }
 ```
 
 ---
 
-## 6. Roadmap
+## 7. Roadmap
 
 ### Phase 0 — Foundations (Current Stage)
-**Goal**: Define the mental model of FastAgent.
-- [x] Define what FastAgent is / is not
-- [x] Establish the 4‑Box Architecture
-- [x] Create Minimal Example
-- [x] Establish extended roadmap & module definitions
-- [x] Implement architecture diagrams
+- [x] Establish the Deterministic Runtime Thesis
+- [x] Define the 4‑Box Architecture & Module Matrix
+- [x] Implement architecture diagrams & Schemas
 
 ### Phase 1 — AgentCore (v0.1)
-**Goal**: Minimal deterministic agent loop.
 - [ ] `FastAgentCore` class & implementation
 - [ ] Agent State Model (Task, Memory, World, Error)
-- [ ] Planner v1 (LLM → Step List)
 - [ ] Execution Loop (Plan → Act → Observe → Adjust)
-- [ ] Logging + Trace (Deterministic replay)
 
-**Deliverable**: Agent can execute a simple multi-step task using mock tools.
-
-### Phase 2 — Tools & UI (v0.2)
-**Goal**: Real actions in the OS.
-- [ ] Tool Registry integration
-- [ ] `FastTool` & `FastToolChain` bridge
-- [ ] `FastUIA` + `FastVision` + `FastOCR` integration
-- [ ] Error detection (UI mismatch, tool failure)
-
-**Deliverable**: Agent can: *“Open Notepad → type → save file”.*
-
-### Phase 3 — Memory & RAG (v0.3)
-**Goal**: Agent becomes stateful and context-aware.
-- [ ] Short-term + Long-term memory
-- [ ] `FastVectorDB` + `FastRAG` integration
-- [ ] Reflection Loop (Self-critique & correction)
-
-### Phase 4 — Multi-Agent System (v0.4)
-**Goal**: Specialized agents collaborating via A2A Protocol.
-- [ ] Agent Router (Task delegation)
-- [ ] Specialized Agents (Coding, Retrieval, UI, Citation)
-- [ ] A2A Protocol & MCP Integration
-
-### Phase 5 — Production Runtime (v1.0)
-- [ ] Stable API & Security Sandbox
-- [ ] JSON Command Schema finalized
-- [ ] Benchmark Suite & Full Documentation
+### Phase 2 — Multi-Agent & Production (v0.4+)
+- [ ] A2A Protocol & Multi-agent scheduling
+- [ ] Security Sandbox & Stable JSON API
+- [ ] Autonomous runtime composition
 
 ---
 
-## 7. Repository Structure
-```text
-FastAgent/
- ├─ src/             # Core source code
- │   ├─ core/        # State Machine & Execution Loop
- │   ├─ planner/     # Step Breakdown & LLM Integration
- │   ├─ memory/      # RAG & Context Management
- │   ├─ tools/       # Tool Registry & Bridge
- │   ├─ ui/          # FastUIA Integration
- │   ├─ vision/      # FastVision & OCR Bridge
- │   └─ router/      # Multi-Agent Orchestration
- ├─ examples/        # Demo applications
- ├─ docs/            # Technical documentation
- └─ README.md
-```
+## 8. Philosophy
+Traditional software executes functions. **FastAgent executes evolving systems.**
 
----
+The goal is not better prompts. The goal is **deterministic machine cognition infrastructure**. FastAgent is the missing link in the evolution from primitives to spatial operating environments:
 
-## 8. Minimal Example (v0.1)
-```java
-FastAgent agent = FastAgent.create();
-
-// The agent plans, acts, and verifies the result autonomously.
-agent.run("Open Notepad, write 'Hello Andre', save it to Desktop.");
-```
-
----
-
-## 9. Philosophy
-FastAgent is not "AutoGPT for Java." FastAgent is an **OS-level Execution Engine** for true autonomy:
-- **Understands the World** (Vision + UIA)
-- **Plans Steps** | **Executes Tools** | **Observes Results** | **Corrects Errors** | **Learns from Experience**
-
-**An agent that actually works, not just talks.**
+**FastJava → FastRuntime → FastAgent → CREAM (Spatial OS)**
 
 ---
 **Made with ⚡ by Andre Stubbe**
 
 <!-- 
-SEO Keywords: agentic ai, autonomous agents, java agents, jni, windows api, fastjava, state machine, local llm, automation, rag, vectordb, execution engine
+SEO Keywords: agentic ai, autonomous agents, java agents, jni, windows api, fastjava, state machine, local llm, automation, rag, vectordb, execution engine, machine cognition
 -->
