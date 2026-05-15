@@ -105,7 +105,52 @@ The Execution engine maps these steps to specific native tools:
 
 ---
 
-## 5. Roadmap
+## 5. Technical Sketches (Architectural Drafts)
+
+### 5.1 The Agent Interface
+```java
+public interface FastAgent {
+    // Static factory for version 0.1
+    static FastAgent create() { return new FastAgentCore(); }
+
+    /** Executes a high-level task autonomously */
+    void run(String goal);
+
+    /** Returns the current internal state of the agent */
+    AgentState getState();
+}
+```
+
+### 5.2 The State Model
+```java
+public record AgentState(
+    TaskState task,
+    MemoryState memory,
+    WorldState world,
+    ErrorState error
+) {}
+
+public enum TaskStatus {
+    IDLE, PLANNING, EXECUTING, OBSERVING, SUCCESS, FAILED
+}
+```
+
+### 5.3 The Planner & Executor
+```java
+public interface Planner {
+    /** Decomposes a goal into a list of atomic steps */
+    List<AgentStep> plan(String goal, AgentState context);
+}
+
+public interface ToolExecutor {
+    /** Executes a specific tool call via JNI/FastJava */
+    ToolResult execute(ToolCall call);
+}
+```
+
+---
+
+## 6. Roadmap
 
 ### Phase 0 — Foundations (Current Stage)
 **Goal**: Define the mental model of FastAgent.
@@ -153,7 +198,7 @@ The Execution engine maps these steps to specific native tools:
 
 ---
 
-## 6. Repository Structure
+## 7. Repository Structure
 ```text
 FastAgent/
  ├─ src/             # Core source code
@@ -171,7 +216,7 @@ FastAgent/
 
 ---
 
-## 7. Minimal Example (v0.1)
+## 8. Minimal Example (v0.1)
 ```java
 FastAgent agent = FastAgent.create();
 
@@ -181,7 +226,7 @@ agent.run("Open Notepad, write 'Hello Andre', save it to Desktop.");
 
 ---
 
-## 8. Philosophy
+## 9. Philosophy
 FastAgent is not "AutoGPT for Java." FastAgent is an **OS-level Execution Engine** for true autonomy:
 - **Understands the World** (Vision + UIA)
 - **Plans Steps** | **Executes Tools** | **Observes Results** | **Corrects Errors** | **Learns from Experience**
