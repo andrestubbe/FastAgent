@@ -202,17 +202,35 @@ while (!state.task().isDone()) {
 
 ---
 
-## 9. Repository Structure
+## 9. Repository Structure (Proposed Skeletons)
 ```text
 FastAgent/
  ├─ src/             # Core source code
  │   ├─ core/        # State Machine & Execution Loop
+ │   │   ├─ FastAgentCore.java
+ │   │   ├─ AgentState.java
+ │   │   ├─ Planner.java
+ │   │   ├─ Step.java
+ │   │   └─ ExecutionLoop.java
  │   ├─ planner/     # Step Breakdown & LLM Integration
  │   ├─ memory/      # RAG & Context Management
+ │   │   ├─ MemoryStore.java
+ │   │   ├─ ShortTermMemory.java
+ │   │   └─ LongTermMemory.java
  │   ├─ tools/       # Tool Registry & Bridge
+ │   │   ├─ Tool.java
+ │   │   ├─ ToolRegistry.java
+ │   │   └─ ToolResult.java
  │   ├─ ui/          # FastUIA Integration
+ │   │   ├─ UIAction.java
+ │   │   ├─ UIContext.java
+ │   │   └─ UIExecutor.java
  │   ├─ vision/      # FastVision & OCR Bridge
+ │   │   ├─ VisionProvider.java
+ │   │   └─ Screenshot.java
  │   └─ router/      # Multi-Agent Orchestration
+ │       ├─ AgentRouter.java
+ │       └─ SubAgent.java
  ├─ examples/        # Demo applications
  ├─ docs/            # Technical documentation
  └─ README.md
